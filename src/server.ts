@@ -10,7 +10,7 @@ const yoga = createYoga({
       prisma,
     };
   },
-  maskedErrors: true, //  process.env.NODE_ENV === "production"
+  maskedErrors: process.env.NODE_ENV === "production",
   graphqlEndpoint: "/graphql",
 });
 
@@ -18,5 +18,5 @@ const server = createServer(yoga);
 
 server.listen(4000, "0.0.0.0", () => {
   /** local only */
-  console.log("Server is running on http://0.0.0.0:4000/");
+  console.log("playground running on http://0.0.0.0:4000/graphql");
 });

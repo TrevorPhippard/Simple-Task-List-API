@@ -2,6 +2,22 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { createMockContext, executeTestQuery, TestContext } from "./utils";
 
+type AddTaskResponse = {
+  addTask: {
+    id: string;
+    title: string;
+    completed: boolean;
+  };
+};
+
+type ToggleTaskkResponse = {
+  toggleTask: {
+    id: string;
+    title: string;
+    completed: boolean;
+  };
+};
+
 describe("Task Resolvers", () => {
   let mockCtx: TestContext;
 
@@ -72,8 +88,10 @@ describe("Task Resolvers", () => {
       mockCtx
     );
 
+    const data = result.data as AddTaskResponse;
+
     expect(result.errors).toBeUndefined();
-    expect(result.data?.addTask.title).toBe("New Task");
+    expect(data?.addTask.title).toBe("New Task");
   });
 
   it("should return an error if title is empty (Zod Validation)", async () => {
@@ -86,16 +104,12 @@ describe("Task Resolvers", () => {
     `;
 
     // Empty string should trigger Zod min(1) validation
-    const result = await executeTestQuery(
-      mutation,
-      { title: "it does!" },
-      mockCtx
-    );
+    const result = await executeTestQuery(mutation, { title: "" }, mockCtx);
 
     expect(result.errors).toBeDefined();
     // Pothos-Zod usually throws a validation error message
     expect(result.errors![0].message).toContain(
-      "String must contain at least 1 character"
+      "Too small: expected string to have >=1 characters"
     );
   });
 
@@ -119,8 +133,8 @@ describe("Task Resolvers", () => {
   `;
 
     const result = await executeTestQuery(mutation, { id: "1" }, mockCtx);
-
-    expect(result.data?.toggleTask.completed).toBe(true);
+    const data = result.data as ToggleTaskkResponse;
+    expect(data?.toggleTask.completed).toBe(true);
     expect(mockCtx.prisma.task.update).toHaveBeenCalledWith(
       expect.objectContaining({
         data: { completed: true },

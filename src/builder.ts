@@ -67,6 +67,7 @@ export const builder = new SchemaBuilder<{
 
   validation: {
     validationError: (failure) => {
+      console.log(failure);
       return new Error(JSON.stringify(failure.issues));
     },
   },
