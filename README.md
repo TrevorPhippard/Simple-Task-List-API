@@ -54,19 +54,24 @@ Under the _Connection_ tab:
 
 Click Save.
 
-## Application Setup
+## Application Setup (Local Setup)
 
-Once the database is accessible, run the following commands to generate the client and sync your database schema:
+The docker image of the task service migrates and seeds the database,
+if you are testing locally you'll need to do this yourself, you can at least launch
+the postgres container and pgadmin. Once the database is accessible,
 
-```Bash
 # Generate Prisma Client
+
 npm run generate
-```
+
+````
 
 and then populate the columns and rows with task with
 
 ```Bash
 # Generate Prisma Client
+npm run seed
+`# Generate Prisma Client
 npm run seed
 ```
 
@@ -144,3 +149,4 @@ mutation RemoveTask {
   }
 }
 ```
+````

@@ -13,19 +13,20 @@ const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  const now = new Date();
-
   const tasks = Array.from({ length: 10 }).map((_, i) => ({
     id: `task-${i + 1}`,
     title: `Task ${i + 1}`,
     completed: i % 2 === 0,
   }));
 
-  await prisma.task.createMany({
+  // skipDuplicates: true ensures that if a record with the same ID
+  // already exists, Prisma will simply ignore it instead of throwing an error.
+  const result = await prisma.task.createMany({
     data: tasks,
+    skipDuplicates: true,
   });
 
-  console.log("✅ 10 tasks created");
+  console.log(`✅ Seeded ${result.count} new tasks.`);
 }
 
 main()
