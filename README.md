@@ -142,7 +142,7 @@ mutation toggleTask {
 }
 
 mutation RemoveTask {
-  deleteTask(id: "60e8bf89-87ad-4f16-809a-e6216a4003ab") {
+  deleteTask(id: "task-1") {
     id
     title
     completed
