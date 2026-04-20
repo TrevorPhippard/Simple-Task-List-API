@@ -57,21 +57,21 @@ Click Save.
 ## Application Setup (Local Setup)
 
 The docker image of the task service migrates and seeds the database,
-if you are testing locally you'll need to do this yourself, you can at least launch
-the postgres container and pgadmin. Once the database is accessible,
+if you are testing locally you'll need to do this yourself, you can at least launch the postgres container and pgadmin.
 
-# Generate Prisma Client
+Once the database is accessible,
 
+```Bash
 npm run generate
-
-````
+```
 
 and then populate the columns and rows with task with
 
 ```Bash
 # Generate Prisma Client
 npm run seed
-`# Generate Prisma Client
+
+# Generate Prisma Client
 npm run seed
 ```
 
@@ -149,4 +149,3 @@ mutation RemoveTask {
   }
 }
 ```
-````
