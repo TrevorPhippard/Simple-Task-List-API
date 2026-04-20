@@ -1,0 +1,61 @@
+services:
+  # ==========================================
+  # DATABASES
+  # ==========================================
+  postgres:
+    image: postgres:15-alpine
+    container_name: lush_postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: lush
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d lush"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - lush
+  # ================================
+  # DB Admin Tools
+  # ================================
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8083:80"
+    depends_on:
+      - postgres
+    networks:
+      - lush
+
+  task-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_DIR: task
+    container_name: lush_task
+    ports:
+      - "50057:4000" # Maps host 50057 to container 4000
+    environment:
+      - DATABASE_URL=postgres://admin:password@postgres:5432/lush?sslmode=disable
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - lush
+
+volumes:
+  pg_data:
+
+networks:
+  lush:
+    driver: bridge

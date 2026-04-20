@@ -1,0 +1,50 @@
+{
+  "name": "lush",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "generate": "prisma generate",
+    "build": "tsc --noEmit && esbuild src/server.ts --bundle --platform=node --format=esm --outfile=dist/server.js --packages=external",
+    "start": "node dist/server.js",
+    "seed": "prisma migrate dev && tsx ./prisma/seed.ts",
+    "test": "vitest",
+    "test:run": "vitest run"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@pothos/core": "^4.12.0",
+    "@pothos/plugin-prisma": "^4.14.3",
+    "@pothos/plugin-relay": "^4.7.0",
+    "@pothos/plugin-validation": "^4.2.0",
+    "@pothos/plugin-zod": "^4.3.0",
+    "@prisma/adapter-pg": "^6.15.0",
+    "@prisma/client": "^6.15.0",
+    "@prisma/internals": "^7.7.0",
+    "dotenv": "^17.4.2",
+    "graphql": "^16.13.2",
+    "graphql-relay": "^0.10.2",
+    "graphql-yoga": "^5.21.0",
+    "pg": "^8.20.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/graphql-relay": "^0.6.0",
+    "@types/node": "^25.6.0",
+    "@types/pg": "^8.20.0",
+    "esbuild": "^0.28.0",
+    "nodemon": "^3.1.14",
+    "prisma": "^6.15.0",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.4",
+    "vitest-mock-extended": "^4.0.0"
+  },
+  "overrides": {
+    "graphql": "$graphql"
+  }
+}

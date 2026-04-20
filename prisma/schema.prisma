@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+generator pothos {
+
+  provider = "prisma-pothos-types"
+  clientOutput = "./prisma"
+  output = "./lib/pothos-prisma-types.ts"
+}
+
+datasource db {
+  provider = "postgresql"
+  /**  @note
+  I'm using Prisma 6, but this was still flagging url being deprecated like prisma 7,
+  just ignore this error, TypeScript: Restart TS Server may help
+  */
+  url      = env("DATABASE_URL")
+}
+
+model Task {
+  id        String   @id @default(uuid())
+  title     String
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
